@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Ecommerce.SharedLibrary.Logs;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Ecommerce.SharedLibrary.Middleware
@@ -19,7 +22,6 @@ namespace Ecommerce.SharedLibrary.Middleware
             try
             {
                 await requestDeledate(context);
-
                 //Too many requests  : 429 status code
                 if (context.Response.StatusCode == StatusCodes.Status429TooManyRequests)
                 {
@@ -34,20 +36,43 @@ namespace Ecommerce.SharedLibrary.Middleware
                 {
                     title = "Alert";
                     message = "You donn't have permission access.";
+                    statusCode = (int)StatusCodes.Status401Unauthorized;
                     await ModifyHeader(context, title, message , statusCode);
                 }
 
                 //Forbidden : 403 status code
-
-            }catch(Exception ex)
+                if (context.Response.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    title = "Out of Access";
+                    message = "You are not allow to access.";
+                    statusCode = (int)StatusCodes.Status403Forbidden;
+                    await ModifyHeader(context, title, message, statusCode);
+                }
+            }
+            catch(Exception ex)
             {
+                LogException.LogExceptions(ex);
+                
+                //408 : Request timeout
+                if(ex is TaskCanceledException || ex is TimeoutException){
+                    title = "Out of time";
+                    message = "Request timeout ...try again";
+                    statusCode = StatusCodes.Status408RequestTimeout;
+                }
 
+                await ModifyHeader(context, title, message, statusCode);
             }
         }
-
-        private async Task ModifyHeader(HttpContext context, string title, string message, int statusCode)
+        private static async Task ModifyHeader(HttpContext context, string title, string message, int statusCode)
         {
-            throw new NotImplementedException();
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(JsonSerializer.Serialize(
+                new ProblemDetails(){
+                    Detail = message,
+                    Status = statusCode,
+                    Title = title
+                }
+            ),CancellationToken.None);
         }
     }
 }
