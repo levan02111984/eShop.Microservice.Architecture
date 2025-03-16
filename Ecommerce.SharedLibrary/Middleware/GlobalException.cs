@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.SharedLibrary.Middleware
 {
-    public class GlobalException(RequestDelegate requestDeledate)
+    public class GlobalException(RequestDelegate next)
     {
         public async Task InvokeAsync(HttpContext context)
         {
@@ -21,7 +21,8 @@ namespace Ecommerce.SharedLibrary.Middleware
 
             try
             {
-                await requestDeledate(context);
+                await next(context);
+
                 //Too many requests  : 429 status code
                 if (context.Response.StatusCode == StatusCodes.Status429TooManyRequests)
                 {
@@ -59,7 +60,6 @@ namespace Ecommerce.SharedLibrary.Middleware
                     message = "Request timeout ...try again";
                     statusCode = StatusCodes.Status408RequestTimeout;
                 }
-
 
                 //default exception
                 await ModifyHeader(context, title, message, statusCode);
