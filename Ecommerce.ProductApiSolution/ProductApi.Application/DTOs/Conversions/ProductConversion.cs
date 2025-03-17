@@ -20,7 +20,7 @@ namespace ProductApi.Application.DTOs.Conversions
         };
 
 
-        //Constant Fileds
+        //Constant Fields
         public static (ProductDTO?, IEnumerable<ProductDTO>?) FromEntity(Product product,IEnumerable<Product>? products)
         {
             //return single entity
@@ -28,7 +28,7 @@ namespace ProductApi.Application.DTOs.Conversions
             {
                 var singleProduct = new ProductDTO(
                         product!.Id,
-                        product.Name,
+                        product.Name!,
                         product.Quantity,
                         product.Price
                     );
