@@ -1,5 +1,7 @@
 ﻿using Ecommerce.SharedLibrary.Logs;
 using Ecommerce.SharedLibrary.Responses;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols;
 using ProductApi.Application.Interfaces;
 using ProductApi.Domain.Entities;
 using ProductApi.Infrastructure.Data;
@@ -32,7 +34,7 @@ namespace ProductApi.Infrastructure.Repositories
                 if (currentEntity is not null && currentEntity.Id > 0)
                     return new Response(true, $"{entity.Name} added to database sucessfully");
                 else
-                    return new Response(false, "Error occurred");
+                    return new Response(false, "Error occurred while adding new product");
             }
             catch (Exception ex)
             {
@@ -44,29 +46,106 @@ namespace ProductApi.Infrastructure.Repositories
             }
         }
 
-        public Task<Response> DeleteAsync(Product entity)
+        public async Task<Response> DeleteAsync(Product entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var product = await FindByIdAsync(entity.Id);
+                if(product is null)
+                {
+                    return new Response(false, $"{entity.Name} not found.");
+                }
+                context.Products.Remove(product);
+                await context.SaveChangesAsync();
+                return new Response(true, $"{entity.Name} is deleted successfully");
+
+            }
+            catch (Exception ex)
+            {
+                //Log the original exceotion
+                LogException.LogExceptions(ex);
+
+                //Display friendly message to the client
+                return new Response(false, "Error occurred deleting new product");
+            }
+        }
+        public async Task<Product> FindByIdAsync(int id)
+        {
+            try
+            {
+                var currentProduct = await context.Products.FindAsync(id);
+                return currentProduct is not null ? currentProduct : null!;
+            }
+            catch (Exception ex)
+            {
+                //Log the original exceotion
+                LogException.LogExceptions(ex);
+
+                //Display friendly message to the client
+                throw new Exception("Error occurred retrieving new product");
+            }
         }
 
-        public Task<Product> FindByIdAsync(int id)
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var products = await context.Products.AsNoTracking().ToListAsync() ;
+                return products is not null ? products : null!;
+            }
+            catch (Exception ex)
+            {
+                //Log the original exceotion
+                LogException.LogExceptions(ex);
+
+                //Display friendly message to the client
+                throw new InvalidOperationException("Error occurred retrieving product");
+            }
+        }
+    
+        public async Task<Product> GetByAsync(Expression<Func<Product, bool>> predicate)
+        {
+            try
+            {
+                var product = await context.Products.Where(predicate).FirstOrDefaultAsync();
+                return product is not null ? product : null!;
+            }
+            catch (Exception ex)
+            {
+                //Log the original exceotion
+                LogException.LogExceptions(ex);
+
+                //Display friendly message to the client
+                throw new InvalidOperationException("Error occurred retrieving product");
+            }
         }
 
-        public Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<Response> UpdateAsync(Product entity)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var product = await FindByIdAsync(entity.Id);
 
-        public Task<Product> GetByAsync(Expression<Func<Product, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+                if (product is null)
+                {
+                    return new Response(false, $"{entity.Name} not found");
+                }
 
-        public Task<Response> UpdateAsync(Product entity)
-        {
-            throw new NotImplementedException();
+                context.Entry(product).State = EntityState.Detached;
+                context.Products.Update(entity);
+
+                await context.SaveChangesAsync();
+                return new Response(true, $"{entity.Name} is updated successfully");
+
+            }
+            catch (Exception ex)
+            {
+                //Log the original exceotion
+                LogException.LogExceptions(ex);
+
+                //Display friendly message to the client
+                return new Response(false, $"Error occurred updating existing product");
+            }
         }
     }
 }
