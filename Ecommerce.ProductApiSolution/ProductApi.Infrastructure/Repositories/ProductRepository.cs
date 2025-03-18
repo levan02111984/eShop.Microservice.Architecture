@@ -1,20 +1,14 @@
 ﻿using Ecommerce.SharedLibrary.Logs;
 using Ecommerce.SharedLibrary.Responses;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Protocols;
 using ProductApi.Application.Interfaces;
 using ProductApi.Domain.Entities;
 using ProductApi.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductApi.Infrastructure.Repositories
 {
-    internal class ProductRepository(ProductDbContext context) : IProduct
+    public class ProductRepository(ProductDbContext context) : IProduct
     {
         public async Task<Response> CreateAsync(Product entity)
         {
