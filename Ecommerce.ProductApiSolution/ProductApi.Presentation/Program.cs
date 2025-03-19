@@ -1,12 +1,18 @@
-using ProductApi.Infrastructure.DependencyInjection;
+﻿using ProductApi.Infrastructure.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); 
+builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureService(builder.Configuration);
-var app = builder.Build();
-// Add services to the container.
 
+var app = builder.Build();
+
+
+// Add services to the container.
+app.UseInfrastructurePolicy();
+
+//Apply OpenAPI/Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 

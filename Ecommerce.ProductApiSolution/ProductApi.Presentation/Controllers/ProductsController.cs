@@ -50,7 +50,7 @@ namespace ProductApi.Presentation.Controllers
             return updateResult.Flag is true ? Ok(updateResult) : BadRequest(updateResult);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<Response>> UpdateProduct(ProductDTO productDTO)
         {
             if(!ModelState.IsValid)
