@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApi.Domain", "OrderApi.Domain\OrderApi.Domain.csproj", "{7D5FAEA6-D5E9-4FC7-8E10-008DC23AB0E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApi.Domain", "OrderApi.Domain\OrderApi.Domain.csproj", "{7D5FAEA6-D5E9-4FC7-8E10-008DC23AB0E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApi.Application", "OrderApi.Application\OrderApi.Application.csproj", "{370DAEF9-206D-40C1-AECD-45C6B6B77A67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApi.Application", "OrderApi.Application\OrderApi.Application.csproj", "{370DAEF9-206D-40C1-AECD-45C6B6B77A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApi.Infrastructure", "OrderApi.Infrastructure\OrderApi.Infrastructure.csproj", "{BD9985B7-DDC0-4604-9C31-80A6A88D9C00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApi.Infrastructure", "OrderApi.Infrastructure\OrderApi.Infrastructure.csproj", "{BD9985B7-DDC0-4604-9C31-80A6A88D9C00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApi.Presentation", "OrderApi.Presentation\OrderApi.Presentation.csproj", "{45FEB5F8-9385-4A5F-8218-538BD04340CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApi.Presentation", "OrderApi.Presentation\OrderApi.Presentation.csproj", "{45FEB5F8-9385-4A5F-8218-538BD04340CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.SharedLibrary", "..\Ecommerce.SharedLibrary\Ecommerce.SharedLibrary.csproj", "{72304060-B5A2-436E-8DDB-C33D793D6079}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{45FEB5F8-9385-4A5F-8218-538BD04340CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45FEB5F8-9385-4A5F-8218-538BD04340CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45FEB5F8-9385-4A5F-8218-538BD04340CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72304060-B5A2-436E-8DDB-C33D793D6079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72304060-B5A2-436E-8DDB-C33D793D6079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72304060-B5A2-436E-8DDB-C33D793D6079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72304060-B5A2-436E-8DDB-C33D793D6079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
