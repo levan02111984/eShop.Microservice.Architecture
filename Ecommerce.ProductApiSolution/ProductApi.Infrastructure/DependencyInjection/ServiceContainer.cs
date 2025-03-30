@@ -21,7 +21,7 @@ namespace ProductApi.Infrastructure.DependencyInjection
             services.AddScoped<IProduct, ProductRepository>();
            
             return services;
-        }
+        } 
 
         public static IApplicationBuilder UseInfrastructurePolicy(this IApplicationBuilder app)
         {

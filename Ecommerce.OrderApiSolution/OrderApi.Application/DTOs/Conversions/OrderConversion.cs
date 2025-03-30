@@ -34,10 +34,17 @@ namespace OrderApi.Application.DTOs.Conversions
                 return (currentOrder, null);
             }
 
+
+            //Return list
             if(order is null || orders is not null)
             {
                 var currentOrders = orders.Select(p =>
-                        new OrderDTO(p.Id, p.ProductId, p.ClientId, p.PurchaseQuantity, p.OrderedDate
+                        new OrderDTO(
+                            p.Id,
+                            p.ProductId,
+                            p.ClientId,
+                            p.PurchaseQuantity,
+                            p.OrderedDate
                     )).ToList();
 
                 return (null, currentOrders);
